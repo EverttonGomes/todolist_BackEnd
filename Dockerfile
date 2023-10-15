@@ -1,33 +1,17 @@
-# Estágio de Build
-FROM mcr.microsoft.com/windows/servercore:ltsc2019 AS build
+FROM ubuntu:latest AS build
 
-WORKDIR C:\app
+RUN apt-get update
+RUN apt-get install openjdk-17-jdk -y
 
-# Copie o código-fonte para o contêiner
 COPY . .
 
-# Instale o Java Development Kit (JDK)
-# Certifique-se de que os binários do JDK estejam disponíveis no diretório 'bin' do seu aplicativo
-COPY jdk-17.0.1 C:\jdk
+RUN apt-get install maven -y
+RUN mvn clean install
 
-# Instale o Apache Maven
-# Certifique-se de que o Maven esteja configurado corretamente no diretório raiz do seu aplicativo
-COPY apache-maven-3.8.4 C:\maven
-
-# Compile o código-fonte com Maven
-RUN C:\maven\bin\mvn clean install
-
-
-
-# Estágio de Execução
-FROM mcr.microsoft.com/windows/servercore:ltsc2019
-
-WORKDIR C:\app
-
-# Copie o JAR compilado do estágio de build
-COPY --from=build C:\app\target\todolist-1.0.0.jar app.jar
+FROM openjdk:17-jdk-slim
 
 EXPOSE 8080
 
-# Comando para iniciar o aplicativo
-ENTRYPOINT ["java", "-jar", "app.jar"]
+COPY --from=build /target/todolist-1.0.0.jar app.jar
+
+ENTRYPOINT [ "java", "-jar", "app.jar" ]
