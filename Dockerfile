@@ -20,7 +20,7 @@ RUN C:\maven\bin\mvn clean install
 
 
 # Estágio de Execução
-FROM mcr.microsoft.com/windows/servercore
+FROM mcr.microsoft.com/windows/servercore:ltsc2019
 
 WORKDIR C:\app
 
