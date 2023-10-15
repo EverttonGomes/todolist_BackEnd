@@ -1,5 +1,5 @@
 # Estágio de Build
-FROM mcr.microsoft.com/windows/servercore:latest AS build
+FROM mcr.microsoft.com/windows/servercore:ltsc2019 AS build
 
 WORKDIR C:\app
 
@@ -20,7 +20,7 @@ RUN C:\maven\bin\mvn clean install
 
 
 # Estágio de Execução
-FROM mcr.microsoft.com/windows/servercore:latest
+FROM mcr.microsoft.com/windows/servercore
 
 WORKDIR C:\app
 
