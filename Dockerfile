@@ -1,5 +1,5 @@
 # Estágio de Build
-FROM mcr.microsoft.com/windows/servercore AS build
+FROM mcr.microsoft.com/windows/servercore:latest AS build
 
 WORKDIR C:\app
 
